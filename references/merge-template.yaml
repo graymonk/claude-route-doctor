@@ -1,0 +1,35 @@
+# ============================================================
+# Clash Verge Rev 增强配置模板（扩展覆写配置 / Merge）
+# 写入位置：数据目录/profiles/<当前订阅的merge-uid>.yaml
+# 也可由用户手动操作：订阅页 → 右键订阅 →「扩展覆写配置」粘贴
+# 改前必备份：cp 原文件 原文件.bak-YYYYMMDD
+# 写完必须让用户重新激活订阅（右键 →「使用」），否则不生效。
+# ============================================================
+# ⚠️ 占位符：把下面两处「🔰国外流量」替换成用户订阅里真实存在的
+#    策略组名（先 grep 订阅 yaml 的 "name":" 列出组名再替换；
+#    优先选承载国外流量的总组；自建单节点模板一般叫 Proxy）。
+# ============================================================
+
+sniffer:
+  enable: true          # 嗅探 TLS/QUIC 握手恢复域名，TUN 模式分流的保底
+  parse-pure-ip: true   # 对纯 IP 连接也嗅探
+  override-destination: false
+  sniff:
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443]
+    HTTP:
+      ports: [80, 8080]
+  force-domain:         # 对 Claude 域名强制嗅探
+    - +.claude.ai
+    - +.anthropic.com
+    - +.claudeusercontent.com
+
+dns:
+  # 默认解析改为经代理发送的加密 DNS（任播就近应答），
+  # 解决"geosite 名单外的域名走国内递归 223.5.5.5/119.29.29.29，
+  # 检测页显示中国DNS"的泄露。国内域名仍按订阅原 policy 走国内 DNS。
+  nameserver:
+    - "https://1.1.1.1/dns-query#🔰国外流量"
+    - "https://8.8.8.8/dns-query#🔰国外流量"
