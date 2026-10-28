@@ -17,6 +17,7 @@ set -euo pipefail
 
 SKILL_NAME="claude-route-doctor"
 REPO="graymonk/claude-route-doctor"
+REPO_NAME="claude-route-doctor"
 BRANCH="main"
 AGENT_DEFAULT="$HOME/.agents/skills"   # ZCode 等智能体的通用标准位置
 AGENT_CLAUDE="$HOME/.claude/skills"    # Claude Code
@@ -64,7 +65,7 @@ else
   echo "==> 从 GitHub 下载 $REPO ..."
   curl -fsSL "https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz" -o "$TMP/repo.tar.gz"
   tar -xzf "$TMP/repo.tar.gz" -C "$TMP"
-  SRC="$TMP/$REPO-$BRANCH"
+  SRC="$TMP/$REPO_NAME-$BRANCH"
 fi
 
 install_to() {
