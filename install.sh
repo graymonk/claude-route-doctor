@@ -77,6 +77,7 @@ install_to() {
     echo "    （发现旧版本，已备份为 .bak-*）"
   fi
   cp -R "$SRC" "$_dest"
+  rm -rf "$_dest/.git"   # 本地克隆安装时不要把仓库元数据带进去
   echo "    已安装: $_dest"
 }
 
