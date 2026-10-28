@@ -9,7 +9,7 @@ description: 诊断与修复 Clash Verge Rev 上使用 Claude 时的线路问题
 
 ## 0. 开始前：范围与护栏
 
-- **只处理 Clash Verge Rev**。先探测客户端（见第 1 步）；如果用户用的是 ClashX / sing-box / Surge / Stash 等，停止修复，告知"本技能仅支持 Clash Verge Rev"，并把手动教程路径给用户。
+- **只处理 Clash Verge Rev**。先探测客户端（见第 1 步）；如果用户用的是 ClashX / sing-box / Surge / Stash 等，停止修复，告知"本技能仅支持 Clash Verge Rev"，并把手动教程给用户：本仓库 `docs/教程-双平台通用.md`。
 - **隐私红线**：订阅配置里有节点 UUID、密码、服务器地址。读取配置做判断时，**只引用分组名、节点名、字段开关状态，绝不把凭据原文复述到回复里**。
 - **四条军规**：
   1. 一次只改一个变量，改完让用户重测，否则无法归因；
@@ -53,7 +53,7 @@ description: 诊断与修复 Clash Verge Rev 上使用 Claude 时的线路问题
 | 「中国出口IPV4」卡显示真实 IP | **良性**：检测站特意探测直连线路的展示位，Claude 看不到 | 告知无需处理 |
 | TUN 模式明显变慢 | `tun.stack: gvisor`（用户态协议栈） | 修复 2：改 Mixed |
 | claude.ai 延迟 250~650ms | 住宅/专线两跳链的正常水平 | 告知正常，别为此切机房节点 |
-| `REALITY authentication failed` / connect EOF | 自建服务器问题（Xray v26 / 参数不符） | 超出本技能范围，引导用户查手动教程"常见故障排查"表 |
+| `REALITY authentication failed` / connect EOF | 自建服务器问题（Xray v26 / 参数不符） | 超出本技能范围，引导用户看 docs/教程-双平台通用.md 的「常见故障排查」表 |
 
 **"五步排查"**（出口漂移专用，按序执行、每步之间重测）：
 1. 三个开关全开吗：TUN + 系统代理 + Chrome 安全 DNS（Cloudflare）。最常见的翻车组合：只开 TUN + Chrome 安全 DNS → 加密 DNS 绕过域名分流；
@@ -107,4 +107,4 @@ description: 诊断与修复 Clash Verge Rev 上使用 Claude 时的线路问题
 
 - **双开的原理**：系统代理模式下浏览器把域名明文交给 Clash（CONNECT），域名分流最可靠且免疫 ECH；TUN 接管全部流量含 UDP 防漏。只开 TUN 时浏览器自己握手，加密 DNS（DoH）绕过 fake-ip、ECH 连嗅探都致盲，claude.ai 在 Cloudflare 后面必然触发。新版 Chrome 已移除关闭 ECH 的 flags 开关，所以"只开 TUN"没有可靠解，双开是唯一稳态。
 - **住宅 vs 机房**：家庭住宅（ISP）IP 信任分普遍 90+，机房（Hosting）只有 50~80；97→79 的分数骤降几乎都是出口漂移，不是 IP 被封。
-- 完整教程（含从零自建、注册养号、支付）在用户的教程包 `01-完整教程-双平台通用.md`，本技能只管诊断修复。
+- 完整教程（含从零自建、注册养号、支付）在本仓库 `docs/教程-双平台通用.md`，本技能只管诊断修复。

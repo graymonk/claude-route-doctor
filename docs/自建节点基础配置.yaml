@@ -1,0 +1,50 @@
+# ============================================================
+# 模板B：自建节点基础 Clash 配置（VLESS + Reality）
+# ============================================================
+# 用法：替换所有 <> 占位内容 → 保存为 clash.yaml（纯文本）
+# → Clash Verge「订阅」→ 新建 → 选择本地文件导入。
+# 参数全部以服务器 `xray url` 输出的 vless:// 链接为准。
+#
+# 相比旧版模板的改动（2026-10-28 实战）：
+#   DNS 上游改为经代理（Proxy 组）发送的加密 DNS，
+#   避免"陌生域名走国内递归"导致检测页显示中国DNS。
+# ============================================================
+
+mode: rule
+mixed-port: 7897
+ipv6: false            # 防 IPv6 泄漏，保持 false
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  default-nameserver:  # 仅用于引导，保持国内即可
+    - 223.5.5.5
+  nameserver:          # 默认解析经代理走加密 DNS，防泄露
+    - "https://1.1.1.1/dns-query#Proxy"
+  nameserver-policy:   # 国内域名仍走国内 DNS，不影响速度
+    "geosite:cn": 223.5.5.5
+
+proxies:
+  - name: my-vps
+    type: vless
+    server: <你的VPS的IP>
+    port: <节点端口，如5835>
+    uuid: <vless链接里的uuid>
+    udp: true
+    flow: xtls-rprx-vision
+    tls: true
+    servername: <vless链接里的sni>
+    client-fingerprint: chrome
+    reality-opts:
+      public-key: <vless链接里的pbk>
+      short-id: <vless链接里的sid，一个字母都不能少>
+    network: tcp
+
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies: [my-vps, DIRECT]
+
+rules:
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy

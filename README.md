@@ -85,6 +85,12 @@ curl -fsSL https://raw.githubusercontent.com/graymonk/claude-route-doctor/main/i
 - GUI 开关和检测页重测需要用户本人动手，AI 负责诊断、改配置和给出点击清单
 - 注册、养号、支付等话题不在本技能范围内
 
+## 配套文档
+
+- 📖 [docs/教程-双平台通用.md](docs/教程-双平台通用.md) —— 从零开始到用上 Claude Code 的完整教程（机场/自建两条路线、客户端设置、环境一致性、注册养号、订阅支付）
+- 🚑 [docs/检测排障速查表.md](docs/检测排障速查表.md) —— 一页纸排障卡，配合检测页使用
+- 🧩 [docs/自建节点基础配置.yaml](docs/自建节点基础配置.yaml) —— 自建 VPS 用户的 Clash 基础配置模板（已内置防泄露 DNS 写法）
+
 ## License
 
 [MIT](LICENSE)
